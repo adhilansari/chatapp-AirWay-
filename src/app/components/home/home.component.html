@@ -1,0 +1,19 @@
+<div class="h-screen flex gap-4  p-[3rem]">
+  <div class="w-[35%] rounded-xl shadow-2xl bg-red-100 p-2">
+
+  <div class="relative">
+      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <span class="material-symbols-rounded">
+          search
+          </span>
+      </div>
+      <input type="search" [formControl]="searchUser"  class="block w-full p-4 pl-10 text-sm text-gray-900 focus:outline-none rounded-lg bg-gray-50" placeholder="Search for users..." required>
+      <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-4 py-2">Search</button>
+  </div>
+
+
+  </div>
+  <div class="w-[65%] rounded-xl shadow-2xl bg-yellow-300">
+
+  </div>
+</div>

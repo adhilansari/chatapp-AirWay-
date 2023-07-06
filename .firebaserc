@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "airway-in": {
+      "hosting": {
+        "chatapp": [
+          "airway-in"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "airway-in"
+  }
+}

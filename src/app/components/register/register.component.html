@@ -1,0 +1,53 @@
+<div class="flex items-center justify-center h-screen ">
+  <div class="form-container mat-elevation-z5">
+    <h1>Register</h1>
+    <form [formGroup]="registerForm" (ngSubmit)="submit()">
+      <!-- name field -->
+      <mat-form-field>
+        <mat-label>Full Name</mat-label>
+        <input matInput placeholder="Adhil Ansari" type="text" name="name" formControlName="name">
+        <mat-error *ngIf="FC.name.errors?.['required']">
+          Name is Required
+        </mat-error>
+      </mat-form-field>
+      <!-- email field -->
+      <mat-form-field>
+        <mat-label>Email Address</mat-label>
+        <input matInput placeholder="Ex. name@example.com" type="text" name="email" formControlName="email">
+        <mat-error *ngIf="FC.email?.errors?.['required']">
+          Email is Required
+        </mat-error>
+        <mat-error *ngIf="FC.email?.errors?.['email']">
+          Email is not correct
+        </mat-error>
+      </mat-form-field>
+      <!-- password field -->
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input matInput placeholder="******" formControlName="password" type="password" name="password">
+        <mat-error *ngIf="FC.password?.errors?.['required']">
+          Password is Required
+        </mat-error>
+        <mat-error *ngIf="FC.password?.errors?.['minlength']">
+          Password must be at least 6 characters
+        </mat-error>
+      </mat-form-field>
+      <!-- confirm password field  -->
+      <mat-form-field>
+        <mat-label>Confirm Password</mat-label>
+        <input matInput placeholder="******" formControlName="confirmPassword" type="password" name="confirmPassword">
+        <mat-error *ngIf="FC.confirmPassword?.errors?.['required']">
+          Confirm Password is Required
+        </mat-error>
+        <mat-error *ngIf="FC.confirmPassword?.errors">
+          should not be empty or password not correct
+        </mat-error>
+      </mat-form-field>
+      <div class="mt-4 center">
+        <button mat-raised-button color="primary" type="submit">Register</button>
+      </div>
+      <span class="mt-4 text-lg center">Don't have an account? <a routerLink="/register" class="text-blue-700">SignUp!</a></span>
+    </form>
+
+  </div>
+</div>

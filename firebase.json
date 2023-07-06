@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "chatapp",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}
