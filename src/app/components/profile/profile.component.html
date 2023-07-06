@@ -1,0 +1,12 @@
+<div class="flex items-center h-screen ">
+  <div class="text-center form-container mat-elevation-z5" *ngIf="user$|async as user">
+    <h1>User Profile</h1>
+    <div class="relative center ">
+      <img width="120" height="120" class="object-cover object-center rounded-full"  [src]="user.photoURL ??'../../../assets/image-placeholder.png'" alt="">
+      <button class="absolute bottom-3 right-[25%]" mat-mini-fab (click)="inputField.click()">
+        <mat-icon >edit</mat-icon>
+      </button>
+    </div>
+    <input #inputField type="file" hidden (change)="uploadImg($event,user)">
+  </div>
+</div>

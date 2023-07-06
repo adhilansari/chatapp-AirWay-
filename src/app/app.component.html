@@ -1,10 +1,12 @@
-<mat-toolbar class="sticky justify-between">
+<mat-toolbar class="fixed justify-between">
   <span>Air Way</span>
   <ng-container *ngIf="authService.currentUser$|async as user;else loginButton">
-    <button class="text-lg" mat-button [matMenuTriggerFor]="userName" >
-      <mat-icon >account_circle</mat-icon>
-      <span>{{user.displayName}}</span>
+
+    <button class="items-center" mat-fab color="none" [matMenuTriggerFor]="userName" >
+      <!-- {{user.displayName}} -->
+      <img width="38" height="38" class="rounded-full "  [src]="user.photoURL?? '../../../assets/image-placeholder.png'" >
     </button>
+
   </ng-container>
   <ng-template #loginButton>
     <button mat-button routerLink="/login">
@@ -21,7 +23,7 @@
 
 
 <mat-menu #userName="matMenu">
-    <button mat-menu-item  (click)="logout()">
-        Logout
-    </button>
+    <button mat-menu-item  (click)="logout()">Logout</button>
+    <button mat-menu-item  routerLink="/profile">Profile</button>
+
 </mat-menu>
