@@ -12,8 +12,6 @@ export class AuthenticationService {
 
   // login User
   login(email:string,password:string){
-    console.log(this.auth);
-
     return from(signInWithEmailAndPassword(this.auth,email,password))
   }
 // logout User
@@ -22,10 +20,8 @@ export class AuthenticationService {
   }
 
   //register User
-  register(name:string,email:string,password:string){
-    return from(createUserWithEmailAndPassword(this.auth,email,password)).pipe(
-      switchMap(({user})=> updateProfile(user,{displayName:name}))
-    )
+  register(email:any,password:any){
+    return from(createUserWithEmailAndPassword(this.auth,email,password))
   }
 
   updateProfileData(profileData:Partial<UserInfo >):Observable<any>{

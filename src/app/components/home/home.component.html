@@ -1,19 +1,206 @@
-<div class="h-screen flex gap-4  p-[3rem]">
-  <div class="w-[35%] rounded-xl shadow-2xl bg-red-100 p-2">
+<div class="h-full flex gap-4  p-[3rem]">
+  <!-- chats  -->
+  <div class="w-[35%] rounded-xl shadow-2xl mat-elevation-z8 bg-red-100/30 p-2">
 
-  <div class="relative">
-      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+    <div class="w-full">
+      <!-- <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
         <span class="material-symbols-rounded">
           search
-          </span>
+        </span>
+      </div> -->
+      <mat-form-field class="w-full">
+        <mat-label>Search</mat-label>
+        <input matInput type="search" [formControl]="searchControl" [matAutocomplete]="users" class="w-full "
+          name="search" placeholder="Search for users..." required>
+      </mat-form-field>
+
+      <mat-autocomplete #users="matAutocomplete">
+        <mat-option *ngFor="let user of users$|async" (click)="createChat(user)" [value]="user.displayName">
+          {{user.displayName}}
+        </mat-option>
+      </mat-autocomplete>
+      <!-- <button type="submit" mat-button>Search</button> -->
+    </div>
+    <mat-tab-group>
+      <mat-tab label="Chats">
+        <mat-divider></mat-divider>
+        <mat-selection-list hideSingleSelectionIndicator="true" multiple="false" [formControl]="chatListControl">
+          <mat-list-option class="" *ngFor="let chat of myChats$|async" (click)="message(chat.id)" [value]="chat.id">
+            <img matListItemAvatar class="object-cover object-center"
+              [src]="chat.chatPic?chat.chatPic:'../../../assets/image-placeholder.png'" alt="">
+
+            <div class="w-full pb-2">
+              <div class="flex justify-between">
+                <span class="block ml-2 font-semibold ">{{chat.chatName}}</span>
+                <span class="block ml-2 text-sm truncate">{{chat.lastMessageDate?.toDate()|date}}</span>
+              </div>
+              <span class="block ml-2 text-sm ">{{chat.lastMessage}}</span>
+            </div>
+
+
+            <mat-divider inset="true"></mat-divider>
+          </mat-list-option>
+        </mat-selection-list>
+
+      </mat-tab>
+      <mat-tab label="Groups"> Groups </mat-tab>
+      <mat-tab label="Calls" background="warn"> Calls </mat-tab>
+    </mat-tab-group>
+
+  </div>
+
+
+  <!--Message Section-->
+  <div class="w-[65%] h-full  rounded-xl shadow-2xl flex flex-col space-y-1  py-2 px-3 bg-red-100/30  ">
+
+    <ng-container *ngIf="selectedChat$|async as selectedChat;else noMessage">
+      <!-- Header -->
+      <div class="flex flex-row items-center justify-between px-3 text-white rounded-lg h-14 ">
+        <div class="flex items-center">
+          <div>
+            <img class="object-cover rounded-full w-11 h-11"
+              [src]="selectedChat.chatPic?selectedChat.chatPic:'../../../assets/image-placeholder.png'" />
+          </div>
+          <div class="ml-4">
+            <p class="text-grey-darkest">
+              {{selectedChat.chatName}}
+            </p>
+            <!-- <p class="mt-1 text-xs text-grey-darker">
+          Andrés, Tom, Harrison, Arnold, Sylvester
+        </p> -->
+          </div>
+        </div>
+
+        <div class="flex">
+          <!-- <button mat-mini-fab color="none">
+            <mat-icon>search</mat-icon>
+          </button>
+          <button mat-mini-fab color="none" class="ml-6">
+            <mat-icon>link</mat-icon>
+          </button> -->
+          <button mat-mini-fab color="none" class="ml-6">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+
+        </div>
+
       </div>
-      <input type="search" [formControl]="searchUser"  class="block w-full p-4 pl-10 text-sm text-gray-900 focus:outline-none rounded-lg bg-gray-50" placeholder="Search for users..." required>
-      <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-4 py-2">Search</button>
-  </div>
 
 
-  </div>
-  <div class="w-[65%] rounded-xl shadow-2xl bg-yellow-300">
+      <!-- Messages Area-->
+      <div class="flex flex-col h-full overflow-auto rounded-lg bg-black/30">
+        <ng-container *ngIf="user$ | async as currentUser">
+          <ng-container *ngIf="messages$ | async as messages">
+            <div class="px-3 py-2">
+
+              <!--Last Date-->
+              <!-- <div class="flex items-center justify-center mb-2">
+                <div class="flex items-start justify-start px-4 py-2 rounded-lg " style="background-color: #DDECF2">
+                  <p class="text-sm text-center uppercase">
+                    February 20, 2018
+                  </p>
+                </div>
+              </div> -->
+
+              <!-- Security Message  -->
+              <!-- <div class="flex items-center justify-center mb-4 ">
+                <div class="px-4 py-2 rounded" style="background-color: #FCF4CB">
+                  <p class="text-xs">
+                    Messages to this chat and calls are now secured with end-to-end encryption. Tap for more info.
+                  </p>
+                </div>
+              </div> -->
+
+              <div class="flex items-center mb-2 " [ngClass]="{'flex-row-reverse':message.senderId===currentUser.uid}"
+                *ngFor="let message of messages">
+                <!-- <div
+                      class="flex items-center justify-center flex-shrink-0 w-10 h-10 bg-indigo-500 rounded-full"
+                    >
+                      A
+                    </div> -->
+                <div class="px-4 py-2 ml-3 text-sm bg-white shadow rounded-xl"
+                  [ngClass]="{'mr-3  bg-indigo-100 ':message.senderId===currentUser.uid}">
+                  <!-- <p class="text-sm text-teal">
+                      Adhil
+                    </p> -->
+                  <p class="mt-1 text-sm">
+                    {{message.text}}
+                  </p>
+                  <p class="mt-1 text-xs text-right text-grey-dark">
+                    {{message.sentDate.toDate()|date:'h:mm a'}}
+                  </p>
+                </div>
+              </div>
+
+              <div #endOfChat></div>
+
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+
+
+
+      <!-- Input -->
+      <div class="flex items-center text-white bg-white/20">
+
+
+        <mat-form-field appearance="fill" class="w-full ">
+          <button mat-icon-button matIconPrefix>
+            <mat-icon>sentiment_satisfied_alt</mat-icon>
+          </button>
+          <input matInput [formControl]="messageControl" class="w-full " (keydown.enter)="sendMessage()" name="message"
+            placeholder="Enter your message..." required>
+          <button mat-icon-button matSuffix (click)="sendMessage()">
+            <mat-icon>send</mat-icon>
+          </button>
+        </mat-form-field>
+        <!-- <div>
+      <mat-icon>mic</mat-icon>
+    </div> -->
+      </div>
+
+
+    </ng-container>
+
+    <!-- no message  -->
+    <ng-template #noMessage>
+      <div class="flex items-center justify-center h-full text-lg font-semibold text-white">
+        <p>Please Select a Chat</p>
+      </div>
+    </ng-template>
 
   </div>
 </div>
+
+
+<!-- <div class="relative my-class-with-custom-shadow ">
+  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+    <span class="material-symbols-rounded">
+      search
+    </span>
+  </div>
+  <input type="search" [formControl]="searchUser"
+    class="block w-full p-4 pl-10 text-sm text-gray-900 rounded-lg focus:outline-none bg-gray-50"
+    placeholder="Search for users..." required>
+  <button type="submit"
+    class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-4 py-2">Search</button>
+</div> -->
+
+
+
+<!-- <div class="flex flex-col text-white" *ngFor="let chat of myChats$|async">
+
+          <div
+            class="flex items-center px-3 py-2 text-sm transition duration-150 ease-in-out border-b cursor-pointer border-slate-100 bg-slate-800/40 hover:bg-slate-800/25 ">
+            <img class="object-cover w-10 h-10 rounded-full"
+              [src]="chat.chatPic?chat.chatPic:'../../../assets/image-placeholder.png'" alt="username" />
+            <div class="w-full pb-2">
+              <div class="flex justify-between">
+                <span class="block ml-2 font-semibold ">{{chat.chatName}}</span>
+                <span class="block ml-2 text-sm ">{{chat.lastMessageDate}}</span>
+              </div>
+              <span class="block ml-2 text-sm ">{{chat.lastMessage}}</span>
+            </div>
+          </div>
+        </div> -->

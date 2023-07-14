@@ -1,7 +1,7 @@
-<div class="flex items-center justify-center h-screen ">
-  <div class="form-container mat-elevation-z5">
+<div class="flex items-center justify-center h-full px-4 text-white">
+  <div class="p-4 text-center form-container bg-white/5 backdrop-blur-sm mat-elevation-z5">
     <h1>Register</h1>
-    <form [formGroup]="registerForm" (ngSubmit)="submit()">
+    <form [formGroup]="registerForm" class="space-y-3" (ngSubmit)="submit()">
       <!-- name field -->
       <mat-form-field>
         <mat-label>Full Name</mat-label>

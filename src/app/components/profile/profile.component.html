@@ -1,12 +1,65 @@
-<div class="flex items-center h-screen ">
-  <div class="text-center form-container mat-elevation-z5" *ngIf="user$|async as user">
+<div class="flex items-center h-full text-white ">
+  <div class="w-[28rem] text-center bg-white/5 backdrop-blur-sm form-container mat-elevation-z5" *ngIf="user$|async as user">
     <h1>User Profile</h1>
-    <div class="relative center ">
-      <img width="120" height="120" class="object-cover object-center rounded-full"  [src]="user.photoURL ??'../../../assets/image-placeholder.png'" alt="">
-      <button class="absolute bottom-3 right-[25%]" mat-mini-fab (click)="inputField.click()">
-        <mat-icon >edit</mat-icon>
+    <div class="relative p-2 rounded-lg center bg-black/20">
+      <img  class="object-cover object-center rounded-full w-36 h-36 max:h-36 max-w-36 "
+        [src]="user.photoURL ??'../../../assets/image-placeholder.png'" alt="">
+      <button class="absolute bottom-3 right-[30%]" mat-mini-fab (click)="inputField.click()">
+        <mat-icon>edit</mat-icon>
       </button>
     </div>
     <input #inputField type="file" hidden (change)="uploadImg($event,user)">
+    <!-- <h1>Profile Form</h1> -->
+    <form [formGroup]="profileForm" class="p-2 rounded-lg " (ngSubmit)="saveProfile()">
+      <div class="grid w-full gap-2 sm:grid-cols-2">
+
+        <!-- firstName field -->
+        <mat-form-field class="">
+          <mat-label>First Name</mat-label>
+          <input matInput placeholder="Adhil" type="text" name="firstName" formControlName="firstName">
+          <mat-error *ngIf="FC.firstName.errors?.['required']">
+            First Name is Required
+          </mat-error>
+        </mat-form-field>
+        <!-- lastName field -->
+        <mat-form-field class="">
+          <mat-label>Last Name</mat-label>
+          <input matInput placeholder=" Ansari" type="text" name="lastName" formControlName="lastName">
+          <mat-error *ngIf="FC.lastName.errors?.['required']">
+            Last Name is Required
+          </mat-error>
+        </mat-form-field>
+               <!-- displayName field -->
+               <mat-form-field class="">
+                <mat-label>Display Name</mat-label>
+                <input matInput placeholder="Adhil Ansari" type="text" name="displayName" formControlName="displayName">
+                <mat-error *ngIf="FC.displayName.errors?.['required']">
+                  display name is Required
+                </mat-error>
+              </mat-form-field>
+
+        <!-- phone field -->
+        <mat-form-field class="">
+          <mat-label>Phone number</mat-label>
+          <input matInput placeholder="Ex.123456789" type="text" name="phone" formControlName="phone">
+          <mat-error *ngIf="FC.phone?.errors?.['required']">
+            Phone number is Required
+          </mat-error>
+        </mat-form-field>
+
+        <!-- address field -->
+        <mat-form-field>
+          <mat-label>Address</mat-label>
+          <input matInput placeholder="Ex. calicut,kerala" type="text" name="address" formControlName="address">
+          <mat-error *ngIf="FC.address?.errors?.['required']">
+            Address number is Required
+          </mat-error>
+        </mat-form-field>
+        <div class="">
+          <button mat-raised-button class="flex w-full h-14" color="primary" type="submit">Save</button>
+        </div>
+      </div>
+    </form>
   </div>
+
 </div>

@@ -1,7 +1,8 @@
-<div class="flex items-center justify-center h-screen ">
-  <div class="form-container mat-elevation-z5">
-    <h1>Login</h1>
-    <form [formGroup]="loginForm" (ngSubmit)="submit()">
+<div class="relative flex items-center justify-center h-full px-4 bg-transparent" >
+
+  <div class="p-4 text-center text-white bg-white/5 backdrop-blur-sm form-container mat-elevation-z5">
+    <h1 class="">Login</h1>
+    <form [formGroup]="loginForm" class="space-y-3" (ngSubmit)="submit()">
       <mat-form-field>
         <mat-label>Email Address</mat-label>
         <input matInput placeholder="Ex. name@example.com" type="text" name="email" formControlName="email">

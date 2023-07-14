@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
+import { switchMap } from 'rxjs';
+import { IProfile } from 'src/app/models/user.model';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { UserService } from 'src/app/services/user.service';
 
 export function passwordMatchValidator():ValidatorFn {
   return (control:AbstractControl): ValidationErrors | null =>{
@@ -10,7 +13,6 @@ export function passwordMatchValidator():ValidatorFn {
     const confirmPassword = control.get('confirmPassword');
 
     if(!password || !confirmPassword) return null
-
 
     if(password&&confirmPassword && password.value!==confirmPassword.value) {
        confirmPassword.setErrors({notMatch:true})
@@ -20,10 +22,7 @@ export function passwordMatchValidator():ValidatorFn {
         delete errors.notMatch;
         confirmPassword?.setErrors(errors);
       }
-
-
     }
-
     return null
   }
 }
@@ -34,12 +33,12 @@ export function passwordMatchValidator():ValidatorFn {
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
-  constructor(private auth:AuthenticationService,private toast:HotToastService,private router:Router){}
-  registerForm=new FormGroup({
-    name:new FormControl('',[Validators.required]),
-    email:new FormControl('',[Validators.required,Validators.email]),
-    password:new FormControl('',[Validators.required,Validators.minLength(6)]),
-    confirmPassword:new FormControl('',Validators.required)
+  constructor(private auth:AuthenticationService,private toast:HotToastService,private router:Router,private userService:UserService,private FB:FormBuilder){}
+  registerForm=this.FB.group({
+    name:['',[Validators.required]],
+    email:['',[Validators.required,Validators.email]],
+    password:['',[Validators.required,Validators.minLength(6)]],
+    confirmPassword:['',Validators.required]
   },{validators:passwordMatchValidator()})
 
   get FC (){
@@ -47,8 +46,11 @@ export class RegisterComponent {
   };
   submit(){
     if(!this.registerForm.valid) return
-   const {name,email,password}=this.registerForm.value
-    this.auth.register(name!,email!,password!).pipe(
+    const { name, email, password } =this.registerForm.value
+
+    this.auth.register(email,password).pipe(
+      switchMap(({user:{uid}})=>this.userService.addUser({ uid,email, displayName: name })
+      ),
       this.toast.observe({
         success:'Congrats! You are all Signed Up',
         loading:'Singing in...',

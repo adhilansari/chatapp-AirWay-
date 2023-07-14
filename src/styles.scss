@@ -1,5 +1,16 @@
 @use 'node_modules/@ngneat/hot-toast/src/styles/styles.scss';
+
 /* You can add global styles to this file, and also import other style files */
+
+@use '@angular/material' as mat;
+
+
+
+.my-class-with-custom-shadow {
+  // Adds a shadow for elevation level 2 with color #e91e63 and 80% of the default opacity:
+  @include mat.elevation(10, #e91e63, 1);
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,11 +24,10 @@
 }
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @layer base {
   .form-container {
-    @apply block w-[400px] m-auto bg-slate-200 p-12 rounded-2xl
+    @apply block w-[400px] m-auto  p-2 rounded-2xl
   }
   .form-container mat-form-field {
     @apply w-full ;
@@ -27,16 +37,31 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 }
 
+
+// .my-class-with-custom-shadow {
+//   // Adds a shadow for elevation level 2 with color #e91e63 and 80% of the default opacity:
+//   @include mat.elevation(2, #e91e63, 0.8);
+// }
 .mdc-text-field--filled:not(.mdc-text-field--disabled){
-  @apply bg-slate-100
+  @apply bg-white/5 rounded-lg
 }
 mat-label{
-  color:#6c757d
+  color:white
 };
 
 .mat-mdc-form-field:not(.mat-form-field-no-animations) .mdc-text-field__input{
-  @apply text-gray-700 placeholder:text-gray-600
+  @apply text-white bg-none placeholder:bg-none
 }
-.mat-toolbar .mat-mdc-button-base.mat-unthemed{
 
+.my-class-with-default-shadow {
+  // Adds a shadow for elevation level 2 with default color and full opacity:
+  @include mat.elevation(2);
 }
+
+.mat-body p, .mat-body-2 p, .mat-typography .mat-body p, .mat-typography .mat-body-2 p, .mat-typography p {
+  @apply m-0
+}
+.mat-mdc-form-field-subscript-wrapper{
+   @apply hidden
+}
+

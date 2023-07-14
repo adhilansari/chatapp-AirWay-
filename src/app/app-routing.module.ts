@@ -8,7 +8,7 @@ import {canActivate,redirectUnauthorizedTo,redirectLoggedInTo} from '@angular/fi
 import { ProfileComponent } from './components/profile/profile.component';
 
 const redirectToLogin=()=>redirectUnauthorizedTo(['/login']);
-const redirectToHome= ()=>redirectLoggedInTo(['/home'])
+const redirectToHome= ()=>redirectLoggedInTo(['/home']);
 
 const routes: Routes = [
   {path:'',component:LandingPageComponent,pathMatch:'full'},

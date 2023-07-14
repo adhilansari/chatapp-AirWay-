@@ -1,10 +1,10 @@
-<mat-toolbar class="fixed justify-between">
-  <span>Air Way</span>
-  <ng-container *ngIf="authService.currentUser$|async as user;else loginButton">
+<mat-toolbar class="justify-between ">
+  <span class="cursor-pointer" routerLink="/">Air Way</span>
+  <ng-container *ngIf="user$|async as user;else loginButton">
 
-    <button class="items-center" mat-fab color="none" [matMenuTriggerFor]="userName" >
-      <!-- {{user.displayName}} -->
-      <img width="38" height="38" class="rounded-full "  [src]="user.photoURL?? '../../../assets/image-placeholder.png'" >
+    <!-- {{user.displayName}} -->
+    <button class=" center" mat-fab color="none" [matMenuTriggerFor]="userName" >
+      <img class="object-cover object-center w-12 h-12 rounded-full max:h-12 max-w-12 "  [src]="user.photoURL?? '../../../assets/image-placeholder.png'" >
     </button>
 
   </ng-container>
@@ -17,13 +17,11 @@
 
 </mat-toolbar>
 
-<div class="">
-  <router-outlet></router-outlet>
+<div class="h-[calc(100vh-64px)] bg-cover"style="background: url('../assets/jeremy-bishop-G9i_plbfDgk-unsplash.jpg');">
+  <router-outlet ></router-outlet>
 </div>
-
-
 <mat-menu #userName="matMenu">
-    <button mat-menu-item  (click)="logout()">Logout</button>
-    <button mat-menu-item  routerLink="/profile">Profile</button>
-
+  <button mat-menu-item  routerLink="/profile">Profile</button>
+  <button mat-menu-item  (click)="logout()">Logout</button>
 </mat-menu>
+
